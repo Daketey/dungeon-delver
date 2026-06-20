@@ -4,6 +4,13 @@ A first-person 3D dungeon crawler built in Godot 4.6, based on the [**Simple Dun
 
 [dungeon-delver-3d.netlify.app](https://dungeon-delver-3d.netlify.app)
 
+## Features that may (or may not) come:
+- Sound Effects and Music
+- Better looking room with a dungeon like feel
+- More Assets
+- Better consistent UI
+- More enemy variety and bosses
+
 ## Controls
 
 | Key | Action |
