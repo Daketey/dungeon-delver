@@ -1,6 +1,6 @@
 # Dungeon Delver 3D
 
-A first-person 3D dungeon crawler built in Godot 4.6, based on the **Simple Dungeon 1.5** tabletop ruleset.
+A first-person 3D dungeon crawler built in Godot 4.6, based on the [**Simple Dungeon 1.5**](https://ahobday.itch.io/simple-dungeon) tabletop ruleset.
 
 [dungeon-delver-3d.netlify.app](https://dungeon-delver-3d.netlify.app)
 
