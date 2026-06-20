@@ -1,0 +1,46 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/World.gd" id="1_l4f8q"]
+[ext_resource type="PackedScene" path="res://scenes/Player.tscn" id="2_aq56r"]
+[ext_resource type="Script" path="res://scripts/CharacterBody3D.gd" id="3_qqi5w"]
+[ext_resource type="PackedScene" path="res://scenes/Merchant.tscn" id="4_xaf4m"]
+[ext_resource type="Script" path="res://scripts/Merchant.gd" id="5_hrl6t"]
+[ext_resource type="PackedScene" path="res://scenes/Map.tscn" id="6_vxqm6"]
+[ext_resource type="Script" path="res://scripts/Map.gd" id="7_swoe6"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_7x8jf"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_oxmas"]
+sky_material = SubResource("ProceduralSkyMaterial_7x8jf")
+
+[sub_resource type="Environment" id="Environment_q5osd"]
+background_mode = 1
+background_color = Color(0.14633, 0.000127414, 0.214842, 1)
+sky = SubResource("Sky_oxmas")
+ambient_light_color = Color(0.2627451, 0.1764706, 0.42745098, 1)
+tonemap_mode = 2
+ssao_enabled = true
+glow_enabled = true
+
+[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_cwmyt"]
+
+[node name="World3" type="Node3D" unique_id=583794522 node_paths=PackedStringArray("Map")]
+script = ExtResource("1_l4f8q")
+Map = NodePath("Map")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1216904450]
+environment = SubResource("Environment_q5osd")
+camera_attributes = SubResource("CameraAttributesPractical_cwmyt")
+
+[node name="Player" type="CharacterBody3D" parent="." unique_id=906910729 instance=ExtResource("2_aq56r")]
+platform_wall_layers = 255
+script = ExtResource("3_qqi5w")
+
+[node name="Merchant" type="CharacterBody3D" parent="." unique_id=1678166864 node_paths=PackedStringArray("player_char") instance=ExtResource("4_xaf4m")]
+script = ExtResource("5_hrl6t")
+player_char = NodePath("../Player")
+
+[node name="Map" type="Node2D" parent="." unique_id=880831850 instance=ExtResource("6_vxqm6")]
+script = ExtResource("7_swoe6")

@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://c6pgql8c1frcs"]
+
+[ext_resource type="Texture2D" path="res://textures/ui/merchant.png" id="1_fvq1e"]
+[ext_resource type="Script" uid="uid://cla23glsrl7fx" path="res://scripts/Merchant.gd" id="1_swnpy"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_bsj6p"]
+
+[node name="Merchant" type="CharacterBody3D" unique_id=1678166864]
+script = ExtResource("1_swnpy")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1512136512]
+transform = Transform3D(0.6, 0, 0, 0, 0.6, 0, 0, 0, 0.6, -0.099, 0.722, 0)
+shape = SubResource("CapsuleShape3D_bsj6p")
+
+[node name="Sprite3D" type="Sprite3D" parent="CollisionShape3D" unique_id=1293786432]
+transform = Transform3D(0.24999999, 0, 0, 0, 0.24999999, 0, 0, 0, 0.24999999, 0.024443597, 0.11786282, 0.035122257)
+texture = ExtResource("1_fvq1e")

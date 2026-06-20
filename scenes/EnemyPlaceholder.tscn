@@ -1,0 +1,27 @@
+[gd_scene format=3 uid="uid://d0tcof66xcksl"]
+
+[ext_resource type="Texture2D" uid="uid://2vgn741hgfdk" path="res://Enemies/goblin.png" id="2_t430h"]
+[ext_resource type="Script" uid="uid://bsrvhba0efjy5" path="res://scripts/EnemyPlaceholder.gd" id="4"]
+
+[sub_resource type="CapsuleShape3D" id="2"]
+radius = 0.35
+height = 1.2
+
+[sub_resource type="AnimatedTexture" id="AnimatedTexture_kejhs"]
+
+[node name="EnemyPlaceholder" type="CharacterBody3D" unique_id=392855608]
+script = ExtResource("4")
+
+[node name="EnemyPlaceholder#Mesh" type="MeshInstance3D" parent="." unique_id=198264619]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+
+[node name="EnemyPlaceholder#CollisionShape" type="CollisionShape3D" parent="." unique_id=1169079088]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+shape = SubResource("2")
+
+[node name="Sprite3D" type="Sprite3D" parent="." unique_id=679142443]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0.083265066, 0.91501904, 0.38151217)
+texture = ExtResource("2_t430h")
+
+[node name="Sprite3D2" type="Sprite3D" parent="." unique_id=303712397]
+texture = SubResource("AnimatedTexture_kejhs")

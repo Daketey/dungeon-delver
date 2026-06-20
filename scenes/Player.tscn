@@ -1,0 +1,27 @@
+[gd_scene format=3 uid="uid://bqfjttwgpk75m"]
+
+[ext_resource type="Script" uid="uid://c6f73sekwbt1r" path="res://scripts/CharacterBody3D.gd" id="1_3yxie"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_8d6sp"]
+height = 1.68303
+
+[node name="CharacterBody3D" type="CharacterBody3D" unique_id=122526840]
+platform_wall_layers = 255
+script = ExtResource("1_3yxie")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=2088309460]
+transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0, 0.722166, 0)
+shape = SubResource("CapsuleShape3D_8d6sp")
+
+[node name="Neck" type="Node3D" parent="." unique_id=163921465]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0971445, 0)
+
+[node name="SpotLight3D" type="SpotLight3D" parent="Neck" unique_id=1415731234]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0.3)
+light_color = Color(0.9999996, 0.90866584, 0.87146217, 1)
+shadow_bias = 0.15
+spot_range = 10.0
+spot_angle = 57.4715
+
+[node name="Camera3D" type="Camera3D" parent="Neck" unique_id=1309019289]
+fov = 70.0

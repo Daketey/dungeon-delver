@@ -1,0 +1,33 @@
+[gd_scene format=3 uid="uid://djlroxspqjcaw"]
+
+[ext_resource type="Script" uid="uid://mf06dsakjore" path="res://scripts/World.gd" id="1"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_7x8jf"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_oxmas"]
+sky_material = SubResource("ProceduralSkyMaterial_7x8jf")
+
+[sub_resource type="Environment" id="Environment_q5osd"]
+background_mode = 1
+background_color = Color(0.14633, 0.000127414, 0.214842, 1)
+sky = SubResource("Sky_oxmas")
+ambient_light_color = Color(0.366682, 0.000614485, 0.490461, 1)
+tonemap_mode = 2
+ssao_enabled = true
+glow_enabled = true
+
+[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_cwmyt"]
+
+[node name="World3" type="Node3D" unique_id=583794522]
+script = ExtResource("1")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1216904450]
+environment = SubResource("Environment_q5osd")
+camera_attributes = SubResource("CameraAttributesPractical_cwmyt")
+
+[node name="SunLight" type="DirectionalLight3D" parent="." unique_id=1557288756]
+transform = Transform3D(0.63539004, -0.22573416, -0.73846024, -0.2593434, 0.83838665, -0.47942555, 0.7273379, 0.49613702, 0.47415984, 0, 0, 0)
+light_color = Color(0.35470363, 0.17688712, 0.44875306, 1)
+light_energy = 0.4

@@ -1,0 +1,124 @@
+[gd_scene format=3 uid="uid://b7iq7i3y5ih4w"]
+
+[ext_resource type="ArrayMesh" uid="uid://di2mi2mvcaycw" path="res://meshes/Floor.obj" id="1_aijku"]
+[ext_resource type="Material" uid="uid://c737aeh2g7274" path="res://materials/Floor.tres" id="2_auawo"]
+[ext_resource type="ArrayMesh" uid="uid://bulyi23sraesy" path="res://meshes/Wall.obj" id="3_2pw8p"]
+[ext_resource type="Material" uid="uid://d10gddhdwc6wa" path="res://materials/Wall.tres" id="4_28une"]
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_r21bg"]
+data = PackedVector3Array(-1, 0, -1, 1, 0, -1, -1, 0, 1, -1, 0, 1, 1, 0, -1, 1, 0, 1)
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_2a3kf"]
+data = PackedVector3Array(-1, 0, -1, 1, 0, -1, -1, 0, 1, -1, 0, 1, 1, 0, -1, 1, 0, 1)
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_0ruji"]
+data = PackedVector3Array(-1, 0, -1, 1, 0, -1, -1, 0, 1, -1, 0, 1, 1, 0, -1, 1, 0, 1)
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_ci4e0"]
+data = PackedVector3Array(-1, 0, -1, 1, 0, -1, -1, 0, 1, -1, 0, 1, 1, 0, -1, 1, 0, 1)
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_7r400"]
+data = PackedVector3Array(-1, 0, -1, 1, 0, -1, -1, 0, 1, -1, 0, 1, 1, 0, -1, 1, 0, 1)
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_or8un"]
+data = PackedVector3Array(-1, 0, -1, 1, 0, -1, -1, 0, 1, -1, 0, 1, 1, 0, -1, 1, 0, 1)
+
+[node name="Room" type="Node3D" unique_id=1776919090]
+
+[node name="CenterMarker" type="Marker3D" parent="." unique_id=1031341714]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, 3)
+
+[node name="EnemySpawn" type="Marker3D" parent="." unique_id=1472670074]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, 3)
+
+[node name="Door_S" type="Marker3D" parent="." unique_id=209987819]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 10)
+
+[node name="Door_N" type="Marker3D" parent="." unique_id=1155392062]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 0)
+
+[node name="Door_E" type="Marker3D" parent="." unique_id=1684183638]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0, 4)
+
+[node name="Door_W" type="Marker3D" parent="." unique_id=1051452659]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 4)
+
+[node name="TopFace" type="MeshInstance3D" parent="." unique_id=1558662827]
+transform = Transform3D(-1, 1.50996e-07, 0, -1.50996e-07, -1, 0, 0, 0, 1, 0.9470341, 2, 5.0005336)
+mesh = ExtResource("1_aijku")
+surface_material_override/0 = ExtResource("2_auawo")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="TopFace" unique_id=2030681929]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="TopFace/StaticBody3D" unique_id=934737332]
+shape = SubResource("ConcavePolygonShape3D_r21bg")
+
+[node name="NorthFace" type="MeshInstance3D" parent="." unique_id=1998514143]
+transform = Transform3D(-1, 1.50996e-07, 6.60024e-15, 0, -4.37114e-08, 1, 1.50996e-07, 1, 4.37114e-08, 2.894817, 1, -0.053964615)
+mesh = ExtResource("3_2pw8p")
+surface_material_override/0 = ExtResource("4_28une")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="NorthFace" unique_id=493620397]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="NorthFace/StaticBody3D" unique_id=1045755766]
+shape = SubResource("ConcavePolygonShape3D_2a3kf")
+
+[node name="EastFace" type="MeshInstance3D" parent="." unique_id=1748052097]
+transform = Transform3D(-4.37114e-08, -1, -4.37114e-08, 0, -4.37114e-08, 1, -1, 4.37114e-08, 1.91069e-15, 5.9690566, 1, 1.0362049)
+mesh = ExtResource("3_2pw8p")
+surface_material_override/0 = ExtResource("4_28une")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="EastFace" unique_id=1266009139]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="EastFace/StaticBody3D" unique_id=1183105970]
+shape = SubResource("ConcavePolygonShape3D_0ruji")
+
+[node name="SouthFace" type="MeshInstance3D" parent="." unique_id=1413284817]
+transform = Transform3D(1, -4.37114e-08, -1.91069e-15, 0, -4.37114e-08, 1, -4.37114e-08, -1, -4.37114e-08, 1.0010262, 1, 5.992732)
+mesh = ExtResource("3_2pw8p")
+surface_material_override/0 = ExtResource("4_28une")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="SouthFace" unique_id=1677205380]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="SouthFace/StaticBody3D" unique_id=1580346203]
+shape = SubResource("ConcavePolygonShape3D_ci4e0")
+
+[node name="WestFace" type="MeshInstance3D" parent="." unique_id=908481499]
+transform = Transform3D(7.54979e-08, 1, 4.37114e-08, 0, -4.37114e-08, 1, 1, -7.54979e-08, -3.30012e-15, -0.04279256, 1, 3.1328187)
+mesh = ExtResource("3_2pw8p")
+surface_material_override/0 = ExtResource("4_28une")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="WestFace" unique_id=1723618947]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="WestFace/StaticBody3D" unique_id=2124099610]
+shape = SubResource("ConcavePolygonShape3D_7r400")
+
+[node name="BottomFace" type="MeshInstance3D" parent="." unique_id=1402937906]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.016762, 0, 1.0131063)
+mesh = ExtResource("1_aijku")
+surface_material_override/0 = ExtResource("2_auawo")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="BottomFace" unique_id=1246268654]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="BottomFace/StaticBody3D" unique_id=166450214]
+shape = SubResource("ConcavePolygonShape3D_or8un")
+
+[node name="BottomFace" type="MeshInstance3D" parent="BottomFace" unique_id=1905318383]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.973531, 0, 4.012893)
+mesh = ExtResource("1_aijku")
+surface_material_override/0 = ExtResource("2_auawo")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="BottomFace/BottomFace" unique_id=1000865197]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="BottomFace/BottomFace/StaticBody3D" unique_id=1842085563]
+shape = SubResource("ConcavePolygonShape3D_or8un")
+
+[node name="BottomFace" type="MeshInstance3D" parent="BottomFace/BottomFace" unique_id=1557778064]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.973531, 0, 4.012893)
+mesh = ExtResource("1_aijku")
+surface_material_override/0 = ExtResource("2_auawo")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="BottomFace/BottomFace/BottomFace" unique_id=1934272753]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="BottomFace/BottomFace/BottomFace/StaticBody3D" unique_id=221412479]
+shape = SubResource("ConcavePolygonShape3D_or8un")
