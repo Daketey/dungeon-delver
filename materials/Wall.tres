@@ -1,9 +1,10 @@
 [gd_resource type="StandardMaterial3D" format=3 uid="uid://d10gddhdwc6wa"]
 
-[ext_resource type="Texture2D" uid="uid://bdvkrqlh6vdre" path="res://textures/dungeon/Wall.png" id="1"]
-[ext_resource type="Texture2D" uid="uid://dg5y4675h5g5r" path="res://textures/dungeon/WallNormals.png" id="2"]
+[ext_resource type="Texture2D" uid="uid://bdvkrqlh6vdre" path="res://Textures/dungeon/Wall.png" id="1"]
+[ext_resource type="Texture2D" uid="uid://8ugt0dsajvfg" path="res://Textures/dungeon/WallNormals.png" id="2"]
 
 [resource]
+resource_local_to_scene = true
 diffuse_mode = 1
 specular_mode = 1
 albedo_texture = ExtResource("1")

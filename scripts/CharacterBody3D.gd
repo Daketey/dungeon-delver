@@ -12,6 +12,12 @@ var heroic_feats: Array = [true]
 
 var grid_pos: Vector2i = Vector2i.ZERO
 var combat_active: bool = false
+var movement_locked_until: float = 0.0
+
+# Mobile input — set by MobileControls overlay each frame
+var mobile_move_dir: Vector2 = Vector2.ZERO
+var mobile_look_delta: float = 0.0
+var is_mobile: bool = false
 
 @onready var neck := $Neck
 @onready var camera := $Neck/Camera3D
@@ -24,27 +30,47 @@ const MOUSE_SENS: float = 0.002
 func _ready() -> void:
 	health = max_health
 	grid_pos = Vector2i(int(round(position.x / Globals.GRID_SIZE)), int(round(position.z / Globals.GRID_SIZE)))
-	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+	if not is_mobile:
+		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 
 
 func _physics_process(delta: float) -> void:
 	if combat_active:
 		return
+	if Time.get_ticks_msec() * 0.001 < movement_locked_until:
+		return
 
-	# Mouse look (horizontal only — camera neck handles vertical)
-	var mouse_delta := Input.get_last_mouse_velocity()
-	if Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
-		rotation_degrees.y -= mouse_delta.x * MOUSE_SENS
+	if is_mobile:
+		# Touch camera look
+		if abs(mobile_look_delta) > 0.01:
+			rotation_degrees.y -= mobile_look_delta
 
-	# WASD movement
-	var input_dir := Input.get_vector("strafe_left", "strafe_right", "forward", "back")
-	var wish_dir := Vector3(input_dir.x, 0, input_dir.y).normalized()
-	wish_dir = wish_dir.rotated(Vector3.UP, rotation.y)
+		# Virtual joystick movement
+		var wish_dir := Vector3(mobile_move_dir.x, 0, mobile_move_dir.y)
+		wish_dir = wish_dir.rotated(Vector3.UP, rotation.y)
 
-	if wish_dir.length() > 0.1:
-		velocity = wish_dir * MOVE_SPEED
+		if wish_dir.length() > 0.1:
+			velocity = wish_dir * MOVE_SPEED
+		else:
+			velocity = Vector3.ZERO
+
+		# Reset deltas after consuming
+		mobile_look_delta = 0.0
 	else:
-		velocity = Vector3.ZERO
+		# Mouse look (horizontal only — camera neck handles vertical)
+		var mouse_delta := Input.get_last_mouse_velocity()
+		if Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
+			rotation_degrees.y -= mouse_delta.x * MOUSE_SENS
+
+		# WASD movement
+		var input_dir := Input.get_vector("strafe_left", "strafe_right", "forward", "back")
+		var wish_dir := Vector3(input_dir.x, 0, input_dir.y).normalized()
+		wish_dir = wish_dir.rotated(Vector3.UP, rotation.y)
+
+		if wish_dir.length() > 0.1:
+			velocity = wish_dir * MOVE_SPEED
+		else:
+			velocity = Vector3.ZERO
 
 	move_and_slide()
 
@@ -53,7 +79,7 @@ func _physics_process(delta: float) -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if combat_active:
+	if is_mobile or combat_active:
 		return
 	if event is InputEventMouseButton:
 		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)

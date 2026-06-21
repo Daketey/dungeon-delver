@@ -1,0 +1,138 @@
+[gd_scene format=3 uid="uid://n1qilakvevjc"]
+
+[ext_resource type="Script" uid="uid://dkl0d15klgus8" path="res://scripts/ShopScreen.gd" id="1_shop"]
+
+[node name="ShopScreen" type="CanvasLayer" unique_id=1261833572]
+process_mode = 3
+layer = 110
+script = ExtResource("1_shop")
+
+[node name="Panel" type="Panel" parent="." unique_id=1091797413]
+clip_contents = true
+offset_right = 640.0
+offset_bottom = 480.0
+
+[node name="MainHBox" type="Control" parent="Panel" unique_id=25170624]
+anchors_preset = 0
+offset_left = 8.0
+offset_top = 17.0
+offset_right = 630.0
+offset_bottom = 466.0
+
+[node name="BuyVBox" type="Control" parent="Panel/MainHBox" unique_id=1480682266]
+anchors_preset = 0
+offset_left = 72.0
+offset_top = 31.0
+offset_right = 248.0
+offset_bottom = 398.0
+size_flags_horizontal = 3
+
+[node name="BuyTitle" type="Label" parent="Panel/MainHBox/BuyVBox" unique_id=1355246958]
+layout_mode = 0
+offset_left = -5.0
+offset_top = -10.0
+offset_right = 182.0
+offset_bottom = 7.0
+theme_override_font_sizes/font_size = 16
+text = "Merchant's Wares"
+
+[node name="BuyList" type="ItemList" parent="Panel/MainHBox/BuyVBox" unique_id=1643183971]
+custom_minimum_size = Vector2(0, 260)
+layout_mode = 0
+offset_left = -47.0
+offset_top = 21.0
+offset_right = 246.0
+offset_bottom = 315.0
+size_flags_vertical = 3
+theme_override_constants/h_separation = 14
+theme_override_constants/v_separation = 14
+item_count = 1
+item_0/text = "LongSword"
+
+[node name="ShopGoldLabel" type="Label" parent="Panel/MainHBox/BuyVBox" unique_id=1201230320]
+layout_mode = 0
+offset_left = 45.0
+offset_top = 329.0
+offset_right = 148.0
+offset_bottom = 346.0
+theme_override_colors/font_color = Color(1, 0.85, 0.2, 1)
+theme_override_font_sizes/font_size = 16
+text = "GOLD: 10 GP"
+
+[node name="BuyBtn" type="Button" parent="Panel/MainHBox/BuyVBox" unique_id=157294771]
+custom_minimum_size = Vector2(100, 30)
+layout_mode = 0
+offset_left = 5.0
+offset_top = 360.0
+offset_right = 181.0
+offset_bottom = 390.0
+mouse_filter = 1
+disabled = true
+text = "Buy"
+
+[node name="SellVBox" type="Control" parent="Panel/MainHBox" unique_id=1158770048]
+anchors_preset = 0
+offset_left = 426.0
+offset_top = 25.0
+offset_right = 546.0
+offset_bottom = 392.0
+size_flags_horizontal = 3
+
+[node name="SellTitle" type="Label" parent="Panel/MainHBox/SellVBox" unique_id=630430360]
+layout_mode = 0
+offset_left = -6.0
+offset_top = -5.0
+offset_right = 114.0
+offset_bottom = 12.0
+theme_override_font_sizes/font_size = 16
+text = "Your Items"
+
+[node name="SellList" type="ItemList" parent="Panel/MainHBox/SellVBox" unique_id=1640345712]
+custom_minimum_size = Vector2(0, 260)
+layout_mode = 0
+offset_left = -87.0
+offset_top = 26.0
+offset_right = 177.0
+offset_bottom = 286.0
+size_flags_vertical = 3
+theme_override_constants/h_separation = 14
+theme_override_constants/v_separation = 14
+item_count = 1
+item_0/text = "ShortSword"
+
+[node name="PlayerGoldLabel" type="Label" parent="Panel/MainHBox/SellVBox" unique_id=2103648897]
+layout_mode = 0
+offset_left = -18.0
+offset_top = 295.0
+offset_right = 132.0
+offset_bottom = 312.0
+theme_override_colors/font_color = Color(1, 0.85, 0.2, 1)
+theme_override_font_sizes/font_size = 16
+text = "Your Gold: 4 GP"
+
+[node name="SellBtn" type="Button" parent="Panel/MainHBox/SellVBox" unique_id=1827110907]
+custom_minimum_size = Vector2(100, 30)
+layout_mode = 0
+offset_left = -4.0
+offset_top = 324.0
+offset_right = 116.0
+offset_bottom = 354.0
+mouse_filter = 1
+disabled = true
+text = "Sell"
+
+[node name="CloseBtn" type="Button" parent="Panel/MainHBox/SellVBox" unique_id=1236716793]
+custom_minimum_size = Vector2(120, 30)
+layout_mode = 0
+offset_left = -5.0
+offset_top = 361.0
+offset_right = 115.0
+offset_bottom = 391.0
+mouse_filter = 1
+text = "Close (E)"
+
+[connection signal="item_selected" from="Panel/MainHBox/BuyVBox/BuyList" to="." method="_on_buy_selected"]
+[connection signal="pressed" from="Panel/MainHBox/BuyVBox/BuyBtn" to="." method="_on_buy_pressed"]
+[connection signal="item_selected" from="Panel/MainHBox/SellVBox/SellList" to="." method="_on_sell_selected"]
+[connection signal="pressed" from="Panel/MainHBox/SellVBox/SellBtn" to="." method="_on_sell_pressed"]
+[connection signal="pressed" from="Panel/MainHBox/SellVBox/CloseBtn" to="." method="close"]

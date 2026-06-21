@@ -25,11 +25,10 @@ func roll(dice_specs: Array) -> void:
 		c.queue_free()
 
 	var vs := get_viewport().get_visible_rect().size
-	position = Vector2(vs.x - 200, 40)
-	size = Vector2(185, 135)
+	position = Vector2(8, 146)
+	size = Vector2(220, 135)
 
-	var bg := ColorRect.new()
-	bg.color = Color(0, 0, 0, 0.7)
+	var bg := Panel.new()
 	bg.size = size
 	add_child(bg)
 
@@ -79,7 +78,7 @@ func roll(dice_specs: Array) -> void:
 
 	# Auto-remove
 	var fade := create_tween()
-	fade.tween_interval(3.0)
+	fade.tween_interval(4.0)
 	fade.tween_property(bg, "modulate:a", 0.0, 0.5)
 	fade.tween_callback(queue_free)
 

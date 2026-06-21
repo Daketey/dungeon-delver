@@ -1,0 +1,67 @@
+[gd_resource type="Theme" format=3 uid="uid://bvl6lmtsk5hs2"]
+
+[ext_resource type="Texture2D" uid="uid://boqrwlsqpxudq" path="res://UI-Elements/DarkAgesUi_v1.0/PNG/Default/Transparent border/panel-transparent-border-009.png" id="2_ygbg2"]
+[ext_resource type="Texture2D" uid="uid://ceyffq0mk1l14" path="res://UI-Elements/DarkAgesUi_v1.0/PNG/Default/Border/panel-border-000.png" id="3_4cfsu"]
+[ext_resource type="Texture2D" uid="uid://b4ysilccrdcoh" path="res://UI-Elements/DarkAgesUi_v1.0/PNG/Default/Border/panel-border-008.png" id="4_ygbg2"]
+[ext_resource type="Texture2D" uid="uid://dmgb324iip1ay" path="res://UI-Elements/DarkAgesUi_v1.0/PNG/Default/Border/panel-border-004.png" id="5_sas4f"]
+[ext_resource type="FontFile" uid="uid://g0a4c3ey6k0a" path="res://UI-Elements/Darinia.ttf" id="6_4cfsu"]
+[ext_resource type="Texture2D" uid="uid://pflji260yvkx" path="res://UI-Elements/DarkAgesUi_v1.0/PNG/Default/Panel/panel-000.png" id="6_ygbg2"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_wusqa"]
+resource_local_to_scene = true
+texture = ExtResource("2_ygbg2")
+texture_margin_left = 10.0
+texture_margin_right = 10.0
+modulate_color = Color(0.31061712, 0.31061712, 0.3106171, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_uro8x"]
+texture_margin_left = 10.0
+texture_margin_right = 10.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ylwq4"]
+resource_local_to_scene = true
+texture = ExtResource("3_4cfsu")
+texture_margin_left = 10.0
+texture_margin_right = 10.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_w4rcu"]
+resource_local_to_scene = true
+texture = ExtResource("4_ygbg2")
+texture_margin_left = 10.0
+texture_margin_right = 10.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_gr5ia"]
+resource_local_to_scene = true
+texture = ExtResource("5_sas4f")
+texture_margin_left = 10.0
+texture_margin_top = 10.0
+texture_margin_right = 10.0
+texture_margin_bottom = 10.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4cfsu"]
+bg_color = Color(0.07284262, 0.072842635, 0.072842576, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_4cfsu"]
+texture = ExtResource("6_ygbg2")
+texture_margin_left = 12.0
+texture_margin_top = 12.0
+texture_margin_right = 12.0
+texture_margin_bottom = 12.0
+modulate_color = Color(0.09113712, 0.08772237, 0.087267436, 1)
+
+[resource]
+Button/colors/font_color = Color(1, 1, 1, 1)
+Button/font_sizes/font_size = 16
+Button/fonts/font = ExtResource("6_4cfsu")
+Button/styles/disabled = SubResource("StyleBoxTexture_wusqa")
+Button/styles/focus = SubResource("StyleBoxTexture_uro8x")
+Button/styles/hover = SubResource("StyleBoxTexture_ylwq4")
+Button/styles/normal = SubResource("StyleBoxTexture_w4rcu")
+Button/styles/pressed = SubResource("StyleBoxTexture_gr5ia")
+ItemList/colors/font_color = Color(0.7204674, 0.72046757, 0.7204672, 1)
+ItemList/fonts/font = ExtResource("6_4cfsu")
+ItemList/styles/panel = SubResource("StyleBoxFlat_4cfsu")
+Label/colors/font_color = Color(1, 1, 1, 1)
+Label/font_sizes/font_size = 22
+Label/fonts/font = ExtResource("6_4cfsu")
+Panel/styles/panel = SubResource("StyleBoxTexture_4cfsu")

@@ -1,0 +1,85 @@
+[gd_scene format=3 uid="uid://p78refejbatk"]
+
+[ext_resource type="Script" uid="uid://be6ly0wdmgfih" path="res://scripts/RuneMemoryScreen.gd" id="1_rune"]
+
+[node name="RuneMemoryScreen" type="CanvasLayer" unique_id=1763727]
+process_mode = 3
+layer = 120
+script = ExtResource("1_rune")
+
+[node name="Panel" type="Panel" parent="." unique_id=647435469]
+mouse_filter = 1
+
+[node name="Background" type="ColorRect" parent="Panel" unique_id=2076832493]
+visible = false
+layout_mode = 0
+mouse_filter = 1
+color = Color(0.05, 0.05, 0.12, 0.97)
+
+[node name="AccentBar" type="ColorRect" parent="Panel" unique_id=794463048]
+visible = false
+layout_mode = 0
+color = Color(0.8, 0.55, 0.1, 1)
+
+[node name="TitleLabel" type="Label" parent="Panel" unique_id=256139592]
+layout_mode = 0
+theme_override_colors/font_color = Color(0.85, 0.55, 0.1, 1)
+theme_override_font_sizes/font_size = 22
+text = "RUNIC MEMORY"
+horizontal_alignment = 1
+
+[node name="HintLabel" type="Label" parent="Panel" unique_id=1241366267]
+layout_mode = 0
+theme_override_colors/font_color = Color(0.7, 0.7, 0.7, 1)
+theme_override_font_sizes/font_size = 14
+horizontal_alignment = 1
+
+[node name="RunesHBox" type="HBoxContainer" parent="Panel" unique_id=2016165395]
+layout_mode = 0
+theme_override_constants/separation = 16
+
+[node name="Rune0" type="Button" parent="Panel/RunesHBox" unique_id=535951229]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+focus_mode = 0
+mouse_filter = 1
+disabled = true
+
+[node name="Rune1" type="Button" parent="Panel/RunesHBox" unique_id=2138642170]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+focus_mode = 0
+mouse_filter = 1
+disabled = true
+
+[node name="Rune2" type="Button" parent="Panel/RunesHBox" unique_id=883515243]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+focus_mode = 0
+mouse_filter = 1
+disabled = true
+
+[node name="Rune3" type="Button" parent="Panel/RunesHBox" unique_id=1959020446]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+focus_mode = 0
+mouse_filter = 1
+disabled = true
+
+[node name="ResultLabel" type="Label" parent="Panel" unique_id=1863849520]
+layout_mode = 0
+theme_override_font_sizes/font_size = 16
+horizontal_alignment = 1
+
+[node name="CloseBtn" type="Button" parent="Panel" unique_id=1374324452]
+visible = false
+custom_minimum_size = Vector2(110, 34)
+layout_mode = 0
+mouse_filter = 1
+text = "CONTINUE"
+
+[connection signal="pressed" from="Panel/RunesHBox/Rune0" to="." method="_on_rune_pressed" binds= [0]]
+[connection signal="pressed" from="Panel/RunesHBox/Rune1" to="." method="_on_rune_pressed" binds= [1]]
+[connection signal="pressed" from="Panel/RunesHBox/Rune2" to="." method="_on_rune_pressed" binds= [2]]
+[connection signal="pressed" from="Panel/RunesHBox/Rune3" to="." method="_on_rune_pressed" binds= [3]]
+[connection signal="pressed" from="Panel/CloseBtn" to="." method="_on_close"]

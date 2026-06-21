@@ -33,6 +33,7 @@ func start_combat(player: CharacterBody3D, enemy: CharacterBody3D) -> void:
 	_feats = player.heroic_feats.duplicate()
 	_feats_remaining = 1 + ResourceStash.bonus_heroic_feats
 	_boss_fight = "enemy_name" in enemy and enemy.enemy_name == "Greater Demon"
+	AudioManager.play("combat_start")
 	_log("Combat: %s (lvl %d) vs %s (lvl %d)" % [_player.name, _player.level, _enemy.name, _enemy.level])
 	emit_signal("combat_started", _player, _enemy)
 	emit_signal("combat_update", _player, _enemy)
@@ -42,6 +43,7 @@ func roll_dice() -> void:
 	if _player.health <= 0 or _enemy.health <= 0: return
 	last_hit_roll = roll_die(8); last_damage_roll = roll_die(6); last_defense_roll = roll_die(4)
 	dice_are_fresh = true
+	AudioManager.play("dice_roll")
 	_log("Dice: d8:%d  d6:%d  d4:%d" % [last_hit_roll, last_damage_roll, last_defense_roll])
 	emit_signal("dice_rolled", last_hit_roll, last_damage_roll, last_defense_roll)
 
@@ -66,6 +68,7 @@ func resolve_turn() -> void:
 
 	if _boss_fight and last_hit_roll == 1:
 		_player.health = max(0, _player.health - 4)
+		AudioManager.play("boss_flame")
 		_log("Infernal Flame! The Greater Demon burns you for 4 damage!")
 		emit_signal("combat_update", _player, _enemy); _check_end(); return
 
@@ -82,10 +85,12 @@ func resolve_turn() -> void:
 	if hit >= _enemy.level:
 		var atk: int = dmg + _player.damage_mod; var blk: int = dfn + _enemy.defense_mod; var net: int = max(atk - blk, 0)
 		_enemy.health = max(_enemy.health - net, 0)
+		AudioManager.play("sword_slice")
 		_log("You hit for %d (%d - %d). Enemy HP: %d" % [net, atk, blk, _enemy.health])
 	else:
 		var ed: int = roll_die(6) + _enemy.damage_mod; var eb: int = dfn + _player.defense_mod + ResourceStash.bonus_defense; var net: int = max(ed - eb, 0)
 		_player.health = max(_player.health - net, 0)
+		AudioManager.play("player_damage")
 		_log("Enemy hits for %d (%d - %d). Your HP: %d" % [net, ed, eb, _player.health])
 
 	emit_signal("combat_update", _player, _enemy); _check_end()
@@ -100,6 +105,7 @@ func flee() -> bool:
 	var dmg: int = roll_die(4)
 	_player.health = max(0, _player.health - dmg)
 	if _enemy: _enemy.health = _enemy.max_health  # Enemy stays at full HP
+	AudioManager.play("flee")
 	_log("Fled! Took %d damage. Enemy restored to full health." % dmg)
 	_finish(false)
 	return true
@@ -111,9 +117,13 @@ func apply_paralysis() -> void:
 	_enemy_paralyzed = true
 	_log("Enemy paralyzed! It loses its next attack.")
 
-## Scroll: lightning bolt — deals d4+2 to enemy.
+## Scroll: lightning bolt — deals d4+2 to enemy (auto-roll, legacy path).
 func apply_lightning() -> int:
-	var dmg: int = roll_die(4) + 2
+	return apply_lightning_with_roll(roll_die(4) + 2)
+
+
+## Apply lightning with a player-rolled damage value (from DiceOverlay).
+func apply_lightning_with_roll(dmg: int) -> int:
 	_enemy.health = max(_enemy.health - dmg, 0)
 	_log("Lightning strikes for %d damage! Enemy HP: %d" % [dmg, _enemy.health])
 	emit_signal("combat_update", _player, _enemy)
@@ -123,6 +133,8 @@ func apply_lightning() -> int:
 func _finish(victory: bool) -> void:
 	var pr = _player; var er = _enemy
 	_combat_active = false; dice_are_fresh = false
+	if victory: AudioManager.play("enemy_death")
+	else: AudioManager.play("game_over")
 	_log("Victory!" if victory else "Defeat!")
 	pr.heroic_feats = _feats
 	# Decrement 2-use scroll buffs
@@ -140,5 +152,19 @@ func _finish(victory: bool) -> void:
 	_player = null; _enemy = null; _feats = []
 
 func is_active() -> bool: return _combat_active
+
+
+func is_boss_fight() -> bool: return _boss_fight
+
+
+## Cancel combat without victory/defeat (e.g. teleport scroll).
+## Caller is responsible for hiding the combat screen and unlocking the player.
+func cancel() -> void:
+	_combat_active = false
+	dice_are_fresh = false
+	_player = null
+	_enemy = null
+	_feats = []
+
 
 func _log(message: String) -> void: emit_signal("combat_log", message)

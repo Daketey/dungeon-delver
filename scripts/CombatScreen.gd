@@ -83,7 +83,7 @@ func start_combat(player: CharacterBody3D, enemy: CharacterBody3D) -> void:
 	_refresh(player, enemy)
 	_update_btns()
 	$BottomPanel/BtnRow/AtkBtn.disabled = false
-	$BottomPanel/BtnRow/FleeBtn.disabled = false
+	$BottomPanel/BtnRow/FleeBtn.disabled = combat_manager.is_boss_fight()
 	$BottomPanel/BtnRow/AtkBtn.grab_focus()
 
 
@@ -91,7 +91,7 @@ func _refresh(_player: CharacterBody3D, enemy: CharacterBody3D) -> void:
 	var ef: float = clamp(float(enemy.health) / float(enemy.max_health), 0.0, 1.0)
 	$BottomPanel/EnemyHpBar.size.x = min(get_viewport().get_visible_rect().size.x - 40, 500) * ef
 	$BottomPanel/EnemyHpBar.color = Color(0.8, 0.2, 0.2) if ef > 0.5 else (Color.ORANGE if ef > 0.25 else Color.RED)
-	$BottomPanel/EnemyHpText.text = "%s  HP: %d / %d" % [enemy.enemy_name if "enemy_name" in enemy else "Enemy", enemy.health, enemy.max_health]
+	$BottomPanel/EnemyHpText.text = "HP: %d / %d" % [enemy.health, enemy.max_health]
 
 
 func update_status(_msg: String) -> void: pass
@@ -157,7 +157,7 @@ func _show_dice(hit: int, dmg: int, dfn: int) -> void:
 	_feat_first = -1
 	var feats_ok: bool = _cm() != null and _cm().feats_remaining() > 0
 	$BottomPanel/BtnRow/AtkBtn.disabled = true
-	$BottomPanel/BtnRow/FleeBtn.disabled = false
+	$BottomPanel/BtnRow/FleeBtn.disabled = _cm().is_boss_fight()
 	$BottomPanel/BtnRow/ItemBtn.disabled = true
 	$BottomPanel/BtnRow/FeatBtn.disabled = not feats_ok
 	$BottomPanel/ResolveBtn.disabled = false
@@ -172,7 +172,7 @@ func _update_btns() -> void:
 	$BottomPanel/BtnRow/AtkBtn.disabled = not active or fresh
 	$BottomPanel/BtnRow/FeatBtn.disabled = not fresh or (cm.feats_remaining() <= 0 if cm else true)
 	$BottomPanel/BtnRow/ItemBtn.disabled = not active or fresh
-	$BottomPanel/BtnRow/FleeBtn.disabled = not active
+	$BottomPanel/BtnRow/FleeBtn.disabled = not active or (cm.is_boss_fight() if cm else false)
 	$BottomPanel/ResolveBtn.disabled = not fresh
 	if not fresh and active: $BottomPanel/BtnRow/AtkBtn.grab_focus()
 
@@ -180,25 +180,32 @@ func _update_btns() -> void:
 func _on_atk() -> void:
 	var cm: CombatManager = _cm()
 	if cm == null or not cm.is_active() or cm.dice_are_fresh: return
+	AudioManager.play("ui_click")
 	_disable_all(); cm.roll_dice()
 
 func _on_feat() -> void:
 	var cm: CombatManager = _cm()
 	if cm == null or not cm.dice_are_fresh: return
+	AudioManager.play("ui_click")
 	_disable_all(); _build_feat_btns()
 
 func _on_item() -> void:
 	var inv: Node = get_parent().get_node_or_null("InventoryScreen")
+	AudioManager.play("ui_click")
 	if inv and inv.has_method("open"): inv.open()
 
 func _on_flee() -> void:
 	var cm: CombatManager = _cm()
 	if cm == null: return
+	if cm.is_boss_fight():
+		return
+	AudioManager.play("ui_click")
 	_disable_all(); cm.flee()
 
 func _on_resolve() -> void:
 	var cm: CombatManager = _cm()
 	if cm == null or not cm.dice_are_fresh: return
+	AudioManager.play("ui_click")
 	_disable_all(); $BottomPanel/ResolveBtn.disabled = true; cm.resolve_turn()
 
 func _disable_all() -> void:

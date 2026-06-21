@@ -1,0 +1,71 @@
+[gd_scene format=3 uid="uid://cn6pgfwbfbohc"]
+
+[ext_resource type="Script" uid="uid://74q62f328j47" path="res://scripts/PuzzleScreen.gd" id="1_puz"]
+
+[node name="PuzzleScreen" type="CanvasLayer" unique_id=519825039]
+process_mode = 3
+layer = 120
+script = ExtResource("1_puz")
+
+[node name="Panel" type="Panel" parent="." unique_id=1250922996]
+mouse_filter = 1
+
+[node name="Background" type="ColorRect" parent="Panel" unique_id=249502952]
+visible = false
+layout_mode = 0
+mouse_filter = 1
+color = Color(0.05, 0.05, 0.12, 0.97)
+
+[node name="AccentBar" type="ColorRect" parent="Panel" unique_id=1629044402]
+visible = false
+layout_mode = 0
+color = Color(0.8, 0.55, 0.1, 1)
+
+[node name="TitleLabel" type="Label" parent="Panel" unique_id=923292480]
+layout_mode = 0
+theme_override_colors/font_color = Color(0.85, 0.55, 0.1, 1)
+theme_override_font_sizes/font_size = 22
+text = "ANCIENT RIDDLE"
+horizontal_alignment = 1
+
+[node name="RiddleLabel" type="Label" parent="Panel" unique_id=122882836]
+layout_mode = 0
+theme_override_colors/font_color = Color(0.85, 0.85, 0.85, 1)
+theme_override_font_sizes/font_size = 16
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="OptionA" type="Button" parent="Panel" unique_id=1073029696]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 0
+mouse_filter = 1
+theme_override_font_sizes/font_size = 14
+
+[node name="OptionB" type="Button" parent="Panel" unique_id=1135103403]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 0
+mouse_filter = 1
+theme_override_font_sizes/font_size = 14
+
+[node name="OptionC" type="Button" parent="Panel" unique_id=1679360473]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 0
+mouse_filter = 1
+theme_override_font_sizes/font_size = 14
+
+[node name="ResultLabel" type="Label" parent="Panel" unique_id=1859810477]
+layout_mode = 0
+theme_override_font_sizes/font_size = 16
+horizontal_alignment = 1
+
+[node name="CloseBtn" type="Button" parent="Panel" unique_id=1387361374]
+visible = false
+custom_minimum_size = Vector2(120, 36)
+layout_mode = 0
+mouse_filter = 1
+text = "CONTINUE"
+
+[connection signal="pressed" from="Panel/OptionA" to="." method="_on_option" binds= [0]]
+[connection signal="pressed" from="Panel/OptionB" to="." method="_on_option" binds= [1]]
+[connection signal="pressed" from="Panel/OptionC" to="." method="_on_option" binds= [2]]
+[connection signal="pressed" from="Panel/CloseBtn" to="." method="_on_close"]

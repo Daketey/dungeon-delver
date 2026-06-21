@@ -1,22 +1,29 @@
 [gd_scene format=3 uid="uid://cgxqriolo71n6"]
 
 [ext_resource type="Script" uid="uid://5ca3dt7o2fst" path="res://scripts/PlayerHUD.gd" id="1"]
+[ext_resource type="Texture2D" uid="uid://b52n18xrwdtdj" path="res://Textures/PLayer/Player.png" id="2_uhx4l"]
 
 [node name="PlayerHUD" type="CanvasLayer" unique_id=1582033034]
 process_mode = 3
-layer = 100
+layer = 60
 script = ExtResource("1")
 
-[node name="Bg" type="ColorRect" parent="." unique_id=2031636402]
+[node name="Bg" type="Panel" parent="." unique_id=659790485]
 offset_left = 8.0
 offset_top = 8.0
 offset_right = 228.0
-offset_bottom = 64.0
-color = Color(0, 0, 0, 0.55)
+offset_bottom = 103.0
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=797712219]
+position = Vector2(60, 51)
+scale = Vector2(0.06451416, 0.06457519)
+texture = ExtResource("2_uhx4l")
 
 [node name="StatsVBox" type="VBoxContainer" parent="." unique_id=2065595227]
-offset_left = 16.0
-offset_top = 12.0
+offset_left = 108.0
+offset_top = 24.0
+offset_right = 206.0
+offset_bottom = 97.0
 
 [node name="HpLabel" type="Label" parent="StatsVBox" unique_id=1426310332]
 layout_mode = 2
@@ -36,31 +43,49 @@ theme_override_font_sizes/font_size = 14
 text = "Kills: 0 / 10"
 
 [node name="HintLabel" type="Label" parent="." unique_id=1242335831]
+visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 20.0
-offset_top = -204.0
-offset_right = -20.0
-offset_bottom = -180.0
+offset_left = 18.0
+offset_top = 23.0
+offset_right = -22.0
+offset_bottom = 47.0
+grow_horizontal = 2
+grow_vertical = 2
 theme_override_colors/font_color = Color(1, 0.85, 0.3, 1)
 theme_override_font_sizes/font_size = 16
 horizontal_alignment = 1
+
+[node name="Panel" type="Panel" parent="." unique_id=355248686]
+offset_left = 8.0
+offset_top = 105.0
+offset_right = 228.0
+offset_bottom = 145.0
 
 [node name="ExploredLabel" type="Label" parent="." unique_id=1911129536]
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -160.0
-offset_top = 12.0
-offset_right = -20.0
-offset_bottom = 32.0
+offset_left = -1070.0
+offset_top = 117.0
+offset_right = -998.0
+offset_bottom = 135.0
+grow_horizontal = 0
 theme_override_colors/font_color = Color(0.5, 0.5, 0.5, 1)
 theme_override_font_sizes/font_size = 14
+text = "EXPLORED"
 
 [node name="Flash" type="ColorRect" parent="." unique_id=605723661]
 mouse_filter = 1
 color = Color(1, 0, 0, 0)
+
+[node name="Log Scroll" type="Panel" parent="." unique_id=1167654931]
+self_modulate = Color(1, 1, 1, 0.5372549)
+offset_left = 851.0
+offset_top = 16.0
+offset_right = 1166.0
+offset_bottom = 275.0
 
 [node name="LogScroll" type="ScrollContainer" parent="." unique_id=1455608189]
 anchors_preset = 1
@@ -69,11 +94,27 @@ anchor_right = 1.0
 offset_left = -284.0
 offset_top = 34.0
 offset_right = -4.0
-offset_bottom = 234.0
-follow_focus = true
+offset_bottom = 254.0
+grow_horizontal = 0
 horizontal_scroll_mode = 0
 
 [node name="LogVBox" type="VBoxContainer" parent="LogScroll" unique_id=1211311654]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="LogScroll2" type="ScrollContainer" parent="." unique_id=203344370]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -284.0
+offset_top = 34.0
+offset_right = -4.0
+offset_bottom = 254.0
+grow_horizontal = 0
+follow_focus = true
+horizontal_scroll_mode = 0
+
+[node name="LogVBox" type="VBoxContainer" parent="LogScroll2" unique_id=1000189395]
 layout_mode = 2
 size_flags_horizontal = 3
 

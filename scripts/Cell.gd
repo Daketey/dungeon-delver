@@ -48,3 +48,16 @@ func update_faces(cell_list) -> void:
 		label.position = Vector3(0, 1.5, 0)
 		label.modulate = Color.GREEN
 		add_child(label)
+
+
+## Tint wall faces with a per-room modulate color. Duplicates the
+## shared material so each room instance is visually distinct.
+func apply_tint(color: Color) -> void:
+	for face: MeshInstance3D in [topFace, northFace, eastFace, southFace, westFace, bottomFace]:
+		if not is_instance_valid(face):
+			continue
+		var mat := face.get_surface_override_material(0)
+		if mat:
+			mat = mat.duplicate()
+			mat.albedo_color = color
+			face.set_surface_override_material(0, mat)

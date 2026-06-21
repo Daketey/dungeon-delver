@@ -1,0 +1,10 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://cvwdhovqj30mr"]
+
+[ext_resource type="Texture2D" uid="uid://c7nfeu7w877tf" path="res://Textures/dungeon/Floor.png" id="1_fjcwn"]
+[ext_resource type="Texture2D" uid="uid://demxmhvp3dj12" path="res://Textures/dungeon/FloorNormals.png" id="2"]
+
+[resource]
+diffuse_mode = 1
+albedo_texture = ExtResource("1_fjcwn")
+normal_enabled = true
+normal_texture = ExtResource("2")

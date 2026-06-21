@@ -1,0 +1,59 @@
+[gd_scene load_steps=8 format=3 uid="uid://045xrk4ulcyy"]
+
+[ext_resource type="Script" path="res://scripts/PuzzlePedestal.gd" id="1_ped"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ped"]
+albedo_color = Color(0.15, 0.12, 0.2, 1)
+metallic = 0.3
+roughness = 0.7
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_orb"]
+albedo_color = Color(0.8, 0.55, 0.1, 1)
+emission_enabled = true
+emission = Color(0.8, 0.5, 0.05, 1)
+emission_energy_multiplier = 2.0
+metallic = 0.1
+roughness = 0.3
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_body"]
+top_radius = 0.4
+bottom_radius = 0.5
+height = 0.8
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_top"]
+top_radius = 0.45
+bottom_radius = 0.45
+height = 0.06
+
+[sub_resource type="SphereMesh" id="SphereMesh_orb"]
+radius = 0.15
+height = 0.3
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_area"]
+radius = 1.2
+height = 2.0
+
+[node name="PuzzlePedestal" type="Node3D"]
+script = ExtResource("1_ped")
+
+[node name="PedestalBody" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4, 0)
+mesh = SubResource("CylinderMesh_body")
+surface_material_override/0 = SubResource("StandardMaterial3D_ped")
+
+[node name="PedestalTop" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.82, 0)
+mesh = SubResource("CylinderMesh_top")
+surface_material_override/0 = SubResource("StandardMaterial3D_ped")
+
+[node name="GlowOrb" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.95, 0)
+mesh = SubResource("SphereMesh_orb")
+surface_material_override/0 = SubResource("StandardMaterial3D_orb")
+
+[node name="InteractionArea" type="Area3D" parent="."]
+collision_layer = 0
+collision_mask = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="InteractionArea"]
+shape = SubResource("CylinderShape3D_area")

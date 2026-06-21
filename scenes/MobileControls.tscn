@@ -1,0 +1,35 @@
+[gd_scene format=3 uid="uid://clhahqojeqm1u"]
+
+[ext_resource type="Script" path="res://scripts/MobileControls.gd" id="1_mob"]
+
+[node name="MobileControls" type="CanvasLayer"]
+process_mode = 3
+layer = 200
+script = ExtResource("1_mob")
+
+[node name="JoystickBase" type="ColorRect" parent="."]
+visible = false
+color = Color(0.3, 0.3, 0.3, 0.45)
+mouse_filter = 2
+
+[node name="Thumb" type="ColorRect" parent="JoystickBase"]
+color = Color(0.75, 0.75, 0.75, 0.7)
+mouse_filter = 2
+
+[node name="InteractBtn" type="Button" parent="."]
+focus_mode = 0
+mouse_filter = 1
+theme_override_font_sizes/font_size = 18
+text = "E"
+
+[node name="InventoryBtn" type="Button" parent="."]
+focus_mode = 0
+mouse_filter = 1
+theme_override_font_sizes/font_size = 14
+text = "INV"
+
+[node name="MapBtn" type="Button" parent="."]
+focus_mode = 0
+mouse_filter = 1
+theme_override_font_sizes/font_size = 14
+text = "MAP"

@@ -1,0 +1,12 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://52rsqxynpp7a"]
+
+[ext_resource type="Texture2D" uid="uid://brcvoph3glc0h" path="res://Textures/dungeon/dungeon_templates/wall_1.jpg" id="1_rt4gf"]
+[ext_resource type="Texture2D" uid="uid://dg5y4675h5g5r" path="res://Textures/dungeon/WallNormals.png" id="2"]
+
+[resource]
+resource_local_to_scene = true
+diffuse_mode = 1
+specular_mode = 1
+albedo_texture = ExtResource("1_rt4gf")
+normal_enabled = true
+normal_texture = ExtResource("2")

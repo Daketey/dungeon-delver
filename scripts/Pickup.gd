@@ -66,14 +66,17 @@ func _on_body_entered(body: Node3D) -> void:
 	_collected = true
 	monitoring = false
 	if is_gold:
+		AudioManager.play("gold_pickup")
 		ResourceStash.add_gold(gold_amount)
-		_show_hud_notification("Picked up %d gold!" % gold_amount, Color.GOLD)
+		_show_notify("Picked up %d gold!" % gold_amount, Color.GOLD)
 	else:
+		AudioManager.play("item_pickup")
 		ResourceStash.add_item(item_data)
-		_show_hud_notification("Picked up %s!" % item_data.get("name", "item"), Color.GOLD)
+		_show_notify("Picked up %s!" % item_data.get("name", "item"), Color.GOLD)
 	queue_free()
 
-func _show_hud_notification(text: String, color: Color) -> void:
+
+func _show_notify(text: String, color: Color) -> void:
 	var hud := get_node_or_null("/root/World3/PlayerHUD")
 	if hud and hud.has_method("show_notification"):
 		hud.show_notification(text, color)

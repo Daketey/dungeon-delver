@@ -1,22 +1,37 @@
-﻿extends CanvasLayer
+extends CanvasLayer
 ## Merchant buy/sell screen. Opened by interacting with the merchant (E key).
 
-var panel: Panel
-var player_gold_label: Label
-var shop_gold_label: Label
-var buy_list: ItemList
-var sell_list: ItemList
-var buy_btn: Button
-var sell_btn: Button
-var close_btn: Button
+@onready var panel: Panel = $Panel
+@onready var player_gold_label: Label = $Panel/MainHBox/SellVBox/PlayerGoldLabel
+@onready var shop_gold_label: Label = $Panel/MainHBox/BuyVBox/ShopGoldLabel
+@onready var buy_list: ItemList = $Panel/MainHBox/BuyVBox/BuyList
+@onready var sell_list: ItemList = $Panel/MainHBox/SellVBox/SellList
+@onready var buy_btn: Button = $Panel/MainHBox/BuyVBox/BuyBtn
+@onready var sell_btn: Button = $Panel/MainHBox/SellVBox/SellBtn
+@onready var close_btn: Button = $Panel/MainHBox/SellVBox/CloseBtn
+
 var merchant_inventory: Array[Dictionary] = []
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
-	layer = 60
+	layer = 110
 	visible = false
+	_panel_center()
+
+	# Size the background and layout to match the panel
+	#var bg: ColorRect = $Panel/Background
+	#bg.size = panel.size
+	#var hbox: HBoxContainer = $Panel/MainHBox
+	#hbox.position = Vector2(12, 12)
+	#hbox.size = panel.size - Vector2(40, 40)
+
 	_generate_shop_inventory()
-	_build_ui()
+
+
+func _panel_center() -> void:
+	#panel.size = Vector2(640, 480)
+	var vp: Rect2 = get_viewport().get_visible_rect()
+	panel.position = (vp.size - panel.size) * 0.5
 
 
 func _generate_shop_inventory() -> void:
@@ -32,63 +47,9 @@ func _generate_shop_inventory() -> void:
 	merchant_inventory.append(GameData.TREASURES[1].duplicate())
 
 
-func _build_ui() -> void:
-	panel = Panel.new()
-	panel.size = Vector2(560, 420)
-	var vp: Rect2 = get_viewport().get_visible_rect()
-	panel.position = (vp.size - panel.size) * 0.5
-	panel.mouse_filter = Control.MOUSE_FILTER_STOP
-	var sbg := ColorRect.new(); sbg.color = Color(0.08, 0.08, 0.12, 0.95); sbg.size = panel.size; panel.add_child(sbg)
-	add_child(panel)
-
-	var main_hbox := HBoxContainer.new()
-	main_hbox.add_theme_constant_override("separation", 12)
-	main_hbox.position = Vector2(12, 12)
-	main_hbox.size = panel.size - Vector2(24, 24)
-	panel.add_child(main_hbox)
-
-	var buy_vbox := VBoxContainer.new()
-	buy_vbox.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	main_hbox.add_child(buy_vbox)
-
-	buy_vbox.add_child(_lbl("Merchant's Wares", 16))
-	buy_list = ItemList.new()
-	buy_list.custom_minimum_size = Vector2(0, 260)
-	buy_list.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	buy_list.connect("item_selected", Callable(self, "_on_buy_selected"))
-	buy_vbox.add_child(buy_list)
-	shop_gold_label = _lbl("", 13)
-	shop_gold_label.add_theme_color_override("font_color", Color(1, 0.85, 0.2))
-	buy_vbox.add_child(shop_gold_label)
-	buy_btn = _btn("Buy", 100)
-	buy_btn.disabled = true
-	buy_btn.connect("pressed", Callable(self, "_on_buy_pressed"))
-	buy_vbox.add_child(buy_btn)
-
-	var sell_vbox := VBoxContainer.new()
-	sell_vbox.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	main_hbox.add_child(sell_vbox)
-
-	sell_vbox.add_child(_lbl("Your Items", 16))
-	sell_list = ItemList.new()
-	sell_list.custom_minimum_size = Vector2(0, 260)
-	sell_list.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	sell_list.connect("item_selected", Callable(self, "_on_sell_selected"))
-	sell_vbox.add_child(sell_list)
-	player_gold_label = _lbl("", 13)
-	player_gold_label.add_theme_color_override("font_color", Color(1, 0.85, 0.2))
-	sell_vbox.add_child(player_gold_label)
-	sell_btn = _btn("Sell", 100)
-	sell_btn.disabled = true
-	sell_btn.connect("pressed", Callable(self, "_on_sell_pressed"))
-	sell_vbox.add_child(sell_btn)
-
-	close_btn = _btn("Close (E)", 120)
-	close_btn.connect("pressed", Callable(self, "close"))
-	sell_vbox.add_child(close_btn)
-
-
 func open() -> void:
+	AudioManager.play("merchant_greet")
+	_panel_center()
 	visible = true
 	_refresh()
 	get_tree().paused = true
@@ -118,7 +79,7 @@ func _refresh() -> void:
 		var item: Dictionary = merchant_inventory[i]
 		var txt: String = item.get("name", "?")
 		var gp: int = item.get("gp", 0)
-		txt += "  â€”  %d GP" % gp
+		txt += "  —  %d GP" % gp
 		if item.get("is_weapon", false):
 			txt = "Weapon: " + txt
 			var db: int = item.get("damage_bonus", 0)
@@ -132,7 +93,7 @@ func _refresh() -> void:
 		var txt: String = item.get("name", "?")
 		var gp: int = item.get("gp", 0)
 		if gp > 0:
-			txt += "  â€”  %d GP" % int(gp * 0.5)
+			txt += "  —  %d GP" % int(gp * 0.5)
 		sell_list.add_item(txt)
 	sell_btn.disabled = true
 
@@ -155,6 +116,7 @@ func _on_buy_pressed() -> void:
 	if not ResourceStash.spend_gold(price):
 		return
 	ResourceStash.add_item(item)
+	AudioManager.play("shop_transaction")
 	merchant_inventory.remove_at(selected[0])
 	_refresh()
 
@@ -169,22 +131,6 @@ func _on_sell_pressed() -> void:
 		ResourceStash.add_gold(int(price * 0.5))
 	ResourceStash.remove_item(selected[0])
 	_refresh()
-
-
-func _lbl(text: String, sz: int) -> Label:
-	var l := Label.new()
-	l.text = text
-	l.add_theme_font_size_override("font_size", sz)
-	return l
-
-
-func _btn(text: String, w: float) -> Button:
-	var b := Button.new()
-	b.text = text
-	b.custom_minimum_size = Vector2(w, 30)
-	b.focus_mode = Control.FOCUS_ALL
-	b.mouse_filter = Control.MOUSE_FILTER_STOP
-	return b
 
 
 func _is_combat_active() -> bool:

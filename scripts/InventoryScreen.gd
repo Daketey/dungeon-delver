@@ -1,98 +1,58 @@
-﻿extends CanvasLayer
+extends CanvasLayer
 ## Inventory and equipment management screen. Press Tab to toggle.
 
-var panel: Panel
-var gold_label: Label
-var equip_grid: GridContainer
-var stat_label: Label
-var item_list: ItemList
-var use_btn: Button
-var equip_btn: Button
-var drop_btn: Button
-var close_btn: Button
+const DiceOverlayScene = preload("res://scenes/DiceOverlay.tscn")
+
+@onready var panel: Panel = $Panel
+@onready var gold_label: Label = $Panel/MainVBox/GoldLabel
+@onready var equip_grid: GridContainer = $Panel/MainVBox/EquipmentGrid
+@onready var stat_label: Label = $Panel/MainVBox/StatLabel/Stat
+@onready var item_list: ItemList = $Panel/MainVBox/ItemList
+@onready var use_btn: Button = $Panel/MainVBox/ButtonRow/UseBtn
+@onready var equip_btn: Button = $Panel/MainVBox/ButtonRow/EquipBtn
+@onready var drop_btn: Button = $Panel/MainVBox/ButtonRow/DropBtn
+@onready var close_btn: Button = $Panel/MainVBox/ButtonRow/CloseBtn
+
+# Quick lookup: slot index -> item Label
+var _slot_item_labels: Array[Label] = []
+var _pending_use: Dictionary = {}
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
-	layer = 60
+	layer = 110
 	visible = false
-	_build_ui()
 
+	# Size and position the panel
+	#panel.size = Vector2(480, 460)
+	#var vp: Rect2 = get_viewport().get_visible_rect()
+	#panel.position = (vp.size - panel.size) * 0.5
 
-func _build_ui() -> void:
-	panel = Panel.new()
-	panel.size = Vector2(480, 460)
-	var vp: Rect2 = get_viewport().get_visible_rect()
-	panel.position = (vp.size - panel.size) * 0.5
-	panel.mouse_filter = Control.MOUSE_FILTER_STOP
-	var ibg := ColorRect.new(); ibg.color = Color(0.08, 0.08, 0.12, 0.95); ibg.size = panel.size; panel.add_child(ibg)
-	add_child(panel)
+	#var bg: ColorRect = $Panel/Background
+	#bg.size = panel.size
 
-	var vbox := VBoxContainer.new()
-	vbox.add_theme_constant_override("separation", 6)
-	vbox.position = Vector2(12, 12)
-	vbox.size = panel.size - Vector2(24, 24)
-	panel.add_child(vbox)
+	#var vbox: VBoxContainer = $Panel/MainVBox
+	#vbox.position = Vector2(12, 12)
+	#vbox.size = panel.size - Vector2(24, 24)
 
-	gold_label = _lbl("Gold: 0 GP", 16)
-	gold_label.add_theme_color_override("font_color", Color(1, 0.85, 0.2))
-	vbox.add_child(gold_label)
-
-	var eq_label := _lbl("Equipment", 16)
-	vbox.add_child(eq_label)
-	equip_grid = GridContainer.new()
-	equip_grid.columns = 4
-	equip_grid.add_theme_constant_override("h_separation", 6)
-	vbox.add_child(equip_grid)
+	# Collect item labels per slot for quick refresh access
 	for slot in range(4):
-		var slot_vbox := VBoxContainer.new()
-		var slot_lbl := _lbl(ResourceStash.slot_name(slot), 12)
-		slot_lbl.add_theme_color_override("font_color", Color(0.6, 0.6, 0.6))
-		slot_vbox.add_child(slot_lbl)
-		var item_lbl := _lbl("-", 13)
-		item_lbl.name = "slot_%d" % slot
-		slot_vbox.add_child(item_lbl)
-		var unequip_btn := _btn("X", 30)
+		var slot_vbox := equip_grid.get_child(slot)
+		var item_lbl := slot_vbox.get_node("ItemLabel") as Label
+		_slot_item_labels.append(item_lbl)
+		# Connect unequip button with captured slot index
+		var unequip_btn := slot_vbox.get_node("UnequipBtn") as Button
 		var s: int = slot
 		unequip_btn.connect("pressed", func(): _on_unequip(s))
-		slot_vbox.add_child(unequip_btn)
-		equip_grid.add_child(slot_vbox)
 
-	stat_label = _lbl("", 13)
-	vbox.add_child(stat_label)
 
-	vbox.add_child(_lbl("Inventory", 16))
-	item_list = ItemList.new()
-	item_list.custom_minimum_size = Vector2(0, 160)
-	item_list.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	item_list.allow_reselect = true
-	item_list.connect("item_selected", Callable(self, "_on_item_selected"))
-	vbox.add_child(item_list)
-
-	var btn_row := HBoxContainer.new()
-	btn_row.add_theme_constant_override("separation", 6)
-	vbox.add_child(btn_row)
-
-	use_btn = _btn("Use", 90)
-	use_btn.disabled = true
-	use_btn.connect("pressed", Callable(self, "_on_use_pressed"))
-	btn_row.add_child(use_btn)
-
-	equip_btn = _btn("Equip", 90)
-	equip_btn.disabled = true
-	equip_btn.connect("pressed", Callable(self, "_on_equip_pressed"))
-	btn_row.add_child(equip_btn)
-
-	drop_btn = _btn("Drop", 90)
-	drop_btn.disabled = true
-	drop_btn.connect("pressed", Callable(self, "_on_drop_pressed"))
-	btn_row.add_child(drop_btn)
-
-	close_btn = _btn("Close (Tab)", 100)
-	close_btn.connect("pressed", Callable(self, "close"))
-	btn_row.add_child(close_btn)
+func _panel_center() -> void:
+	var vp: Rect2 = get_viewport().get_visible_rect()
+	panel.position = (vp.size - panel.size) * 0.5
 
 
 func open() -> void:
+	AudioManager.play("inventory_open")
+	_panel_center()
 	visible = true
 	_refresh()
 	get_tree().paused = true
@@ -100,6 +60,7 @@ func open() -> void:
 
 
 func close() -> void:
+	AudioManager.play("inventory_close")
 	visible = false
 	get_tree().paused = false
 	if not _is_combat_active():
@@ -118,9 +79,8 @@ func _refresh() -> void:
 	gold_label.text = "Gold: %d GP" % ResourceStash.gold
 
 	for slot in range(4):
-		var item_lbl := equip_grid.get_child(slot).get_node("slot_%d" % slot) as Label
-		if item_lbl:
-			item_lbl.text = ResourceStash.get_equipped_name(slot)
+		if slot < _slot_item_labels.size():
+			_slot_item_labels[slot].text = ResourceStash.get_equipped_name(slot)
 
 	var lines: Array[String] = []
 	var bd: int = ResourceStash.bonus_damage
@@ -186,26 +146,38 @@ func _on_use_pressed() -> void:
 
 	match effect:
 		"heal_d4":
-			if player:
-				var amt := randi() % 4 + 1
-				player.health = min(player.max_health, player.health + amt)
-				_show_flash("Healed %d HP!" % amt, Color.GREEN)
+			_pending_use = {"idx": idx, "effect": effect, "item_name": item_name}
+			visible = false
+			get_tree().paused = false
+			_show_dice_overlay(4, "Roll to heal")
+			return
 		"heal_d8":
-			if player:
-				var amt := randi() % 8 + 1
-				player.health = min(player.max_health, player.health + amt)
-				_show_flash("Healed %d HP!" % amt, Color.GREEN)
+			_pending_use = {"idx": idx, "effect": effect, "item_name": item_name}
+			visible = false
+			get_tree().paused = false
+			_show_dice_overlay(8, "Roll to heal")
+			return
 		"max_hp_plus1_fullheal":
 			if player:
 				player.max_health += 1
 				player.health = player.max_health
 				_show_flash("Max HP +1! Fully healed.", Color.GOLD)
 		"teleport":
-			# Teleport to dungeon entrance
+			# Cannot escape the boss fight
+			if cm and cm.is_boss_fight():
+				_show_flash("The dark energy anchors you here!", Color.RED)
+				return
+			# End combat if active, then teleport to entrance
+			if cm and cm.is_active():
+				cm.cancel()
+			var cs := get_parent().get_node_or_null("CombatScreen") as CombatScreen
+			if cs:
+				cs.visible = false
 			var world := get_parent()
 			if world and world.has_method("teleport_player_to_entrance"):
 				close()
-				ResourceStash.remove_item(idx)
+				if player:
+					player.combat_active = false
 				world.teleport_player_to_entrance()
 				return
 		"paralysis":
@@ -217,8 +189,11 @@ func _on_use_pressed() -> void:
 				return  # Don't consume
 		"damage_d4plus2":
 			if cm and cm.is_active():
-				var dmg: int = cm.apply_lightning()
-				_show_flash("Lightning deals %d damage!" % dmg, Color.YELLOW)
+				_pending_use = {"idx": idx, "effect": effect, "item_name": item_name}
+				visible = false
+				get_tree().paused = false
+				_show_dice_overlay(4, "Damage = roll + 2")
+				return
 			else:
 				_show_flash("Can only use in combat!", Color.ORANGE)
 				return  # Don't consume
@@ -239,6 +214,7 @@ func _on_use_pressed() -> void:
 		_:
 			_show_flash("%s used." % item_name, Color.WHITE)
 
+	AudioManager.play("item_use")
 	ResourceStash.remove_item(idx)
 	_refresh()
 
@@ -257,11 +233,54 @@ func _show_flash(text: String, color: Color) -> void:
 	tween.tween_callback(lbl.queue_free)
 
 
+func _show_dice_overlay(sides: int, context: String) -> void:
+	var overlay := DiceOverlayScene.instantiate()
+	get_tree().root.add_child(overlay)
+	overlay.roll_result.connect(_on_consumable_roll_result)
+	overlay.open(sides, context)
+
+
+func _on_consumable_roll_result(value: int) -> void:
+	var idx: int = _pending_use.get("idx", -1)
+	var effect: String = _pending_use.get("effect", "")
+	var item_name: String = _pending_use.get("item_name", "item")
+	_pending_use = {}
+
+	var player := _find_player()
+	var cm := _find_combat_manager()
+
+	match effect:
+		"heal_d4":
+			if player:
+				player.health = min(player.max_health, player.health + value)
+				_show_flash("Healed %d HP!" % value, Color.GREEN)
+		"heal_d8":
+			if player:
+				player.health = min(player.max_health, player.health + value)
+				_show_flash("Healed %d HP!" % value, Color.GREEN)
+		"damage_d4plus2":
+			if cm and cm.is_active():
+				var dmg: int = value + 2
+				cm.apply_lightning_with_roll(dmg)
+				_show_flash("Lightning deals %d damage!" % dmg, Color.YELLOW)
+
+	AudioManager.play("item_use")
+	if idx >= 0 and idx < ResourceStash.inventory.size():
+		ResourceStash.remove_item(idx)
+
+	# Reopen inventory
+	visible = true
+	_refresh()
+	get_tree().paused = true
+	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+
+
 func _on_equip_pressed() -> void:
 	var selected := item_list.get_selected_items()
 	if selected.is_empty():
 		return
 	var idx: int = selected[0]
+	AudioManager.play("weapon_equip")
 	ResourceStash.equip(idx)
 	_refresh()
 
@@ -299,19 +318,3 @@ func _find_combat_manager() -> CombatManager:
 func _is_combat_active() -> bool:
 	var cm := _find_combat_manager()
 	return cm != null and cm.is_active()
-
-
-func _lbl(text: String, sz: int) -> Label:
-	var l := Label.new()
-	l.text = text
-	l.add_theme_font_size_override("font_size", sz)
-	return l
-
-
-func _btn(text: String, w: float) -> Button:
-	var b := Button.new()
-	b.text = text
-	b.custom_minimum_size = Vector2(w, 30)
-	b.focus_mode = Control.FOCUS_ALL
-	b.mouse_filter = Control.MOUSE_FILTER_STOP
-	return b

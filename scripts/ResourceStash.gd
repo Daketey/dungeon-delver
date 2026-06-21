@@ -20,6 +20,7 @@ var equipped: Dictionary = {
 # -- Kill tracking --
 var kill_count: int = 0
 var boss_active: bool = false
+var boss_defeated: bool = false
 
 # -- Temporary buffs (2-use scrolls) --
 var temp_buffs: Dictionary = {}  # {"defense_plus1": uses, "damage_plus1": uses}

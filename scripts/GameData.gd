@@ -13,7 +13,7 @@ const ROOM_CONTENTS: Dictionary = {
 	3: {"type": "trap"},
 	4: {"type": "messy", "sub_die": 6, "sub_table": {1:"enemy",2:"enemy",3:"trap",4:"trap",5:"gold",6:"gold"}},
 	5: {"type": "messy", "sub_die": 6, "sub_table": {1:"enemy",2:"trap",3:"trap",4:"gold",5:"treasure",6:"treasure"}},
-	6: {"type": "messy", "sub_die": 6, "sub_table": {1:"trap",2:"trap",3:"gold",4:"gold",5:"treasure",6:"treasure"}},
+	6: {"type": "puzzle"},
 	7: {"type": "healing_spring"},
 	8: {"type": "store_room"},
 }
@@ -25,7 +25,7 @@ const ENEMIES: Dictionary = {
 	1: {"name":"Tunnel Wyrm","level":4,"attack":2,"defense":1,"hp":8,"treasure_min":3,"sprite":"res://Enemies/tunnel_wyrm.png","sprite_scale":1.0},
 	2: {"name":"Lesser Demon","level":4,"attack":1,"defense":1,"hp":6,"treasure_min":4,"sprite":"res://Enemies/lesser_demon.png","sprite_scale":0.9},
 	3: {"name":"Cave Giant","level":3,"attack":1,"defense":2,"hp":8,"treasure_min":4,"sprite":"res://Enemies/cave_giant.png","sprite_scale":1.0},
-	4: {"name":"Giant Centipede","level":3,"attack":1,"defense":1,"hp":6,"treasure_min":4,"sprite":"res://Enemies/giant_centripede.png","sprite_scale":1.2},
+	4: {"name":"Giant Centipede","level":3,"attack":1,"defense":1,"hp":6,"treasure_min":4,"sprite":"res://Enemies/giant_centripede.png","sprite_scale":1.0},
 	5: {"name":"Barrow Wight","level":3,"attack":0,"defense":0,"hp":6,"treasure_min":5,"sprite":"res://Enemies/barrow_wight.png","sprite_scale":0.9},
 	6: {"name":"Goblin","level":2,"attack":-1,"defense":-1,"hp":4,"treasure_min":6,"sprite":"res://Enemies/goblin.png","sprite_scale":0.8},
 }
@@ -81,6 +81,118 @@ const BOSS: Dictionary = {
 }
 
 # =====================================================================
+# Riddles — puzzle room challenges
+# =====================================================================
+const RIDDLES: Array[Dictionary] = [
+	{
+		"question": "I speak without a mouth and hear without ears.\nI have no body, but I come alive with wind.\nWhat am I?",
+		"options": ["An Echo", "A Shadow", "A Flame"],
+		"correct": 0,
+	},
+	{
+		"question": "The more you take, the more you leave behind.\nWhat am I?",
+		"options": ["Footsteps", "Memories", "Time"],
+		"correct": 0,
+	},
+	{
+		"question": "I have cities, but no houses live in them.\nI have mountains, but no trees grow on them.\nI have water, but no fish swim in it.\nWhat am I?",
+		"options": ["A Dream", "A Map", "A Painting"],
+		"correct": 1,
+	},
+	{
+		"question": "I can be cracked, made, told, and played.\nWhat am I?",
+		"options": ["A Joke", "A Code", "A Bell"],
+		"correct": 0,
+	},
+	{
+		"question": "I am not alive, yet I grow.\nI don't have lungs, yet I need air.\nI don't have a mouth, yet water kills me.\nWhat am I?",
+		"options": ["Fire", "A Shadow", "Stone"],
+		"correct": 0,
+	},
+	{
+		"question": "The person who makes it, sells it.\nThe person who buys it, never uses it.\nThe person who uses it, never knows.\nWhat is it?",
+		"options": ["A Coffin", "A Spellbook", "A Key"],
+		"correct": 0,
+	},
+	{
+		"question": "What has keys but no locks,\nspace but no room,\nand you can enter but not go in?",
+		"options": ["A Keyboard", "A Prison", "A Mirror"],
+		"correct": 0,
+	},
+	{
+		"question": "I am always coming but never arrive.\nWhat am I?",
+		"options": ["Tomorrow", "The Tide", "Old Age"],
+		"correct": 0,
+	},
+	{
+		"question": "Forward I am heavy, backward I am not.\nWhat am I?",
+		"options": ["A Ton", "A Rope", "A Promise"],
+		"correct": 0,
+	},
+	{
+		"question": "You see a door with three locks.\nOne key is gold, one silver, one rusted iron.\nA carving reads: 'The poorest opens the way.'\nWhich key do you choose?",
+		"options": ["The rusted iron key", "The silver key", "The gold key"],
+		"correct": 0,
+	},
+]
+
+
+func roll_riddle() -> Dictionary:
+	return RIDDLES[randi() % RIDDLES.size()].duplicate()
+
+
+# =====================================================================
+# Symbol puzzles — complete the pattern (reuses PuzzleScreen UI)
+# =====================================================================
+const SYMBOL_PUZZLES: Array[Dictionary] = [
+	{
+		"question": "Complete the pattern:\n\n    ▲ ■ ▲ ■ ?",
+		"options": ["▲", "■", "◆"],
+		"correct": 0,
+	},
+	{
+		"question": "Complete the pattern:\n\n    ● ○ ● ○ ?",
+		"options": ["○", "●", "◉"],
+		"correct": 1,
+	},
+	{
+		"question": "Complete the pattern:\n\n    ★ ☆ ★ ☆ ?",
+		"options": ["☆", "★", "✦"],
+		"correct": 1,
+	},
+	{
+		"question": "Complete the pattern:\n\n    ◆ ◇ ◆ ◇ ?",
+		"options": ["◇", "◆", "◈"],
+		"correct": 1,
+	},
+	{
+		"question": "Complete the pattern:\n\n    ▲ ▲ ▼ ▼ ▲ ▲ ?",
+		"options": ["▲", "▼", "■"],
+		"correct": 1,
+	},
+	{
+		"question": "Complete the pattern:\n\n    ■ ● ■ ● ■ ?",
+		"options": ["●", "■", "▲"],
+		"correct": 0,
+	},
+	{
+		"question": "Complete the pattern:\n\n    ★ ★ ☆ ★ ★ ☆ ?",
+		"options": ["☆", "★", "✦"],
+		"correct": 1,
+	},
+	{
+		"question": "Complete the pattern:\n\n    ◆ ◆ ◆ ◇ ◆ ◆ ?",
+		"options": ["◇", "◆", "◈"],
+		"correct": 0,
+	},
+]
+
+
+func roll_symbol_puzzle() -> Dictionary:
+	return SYMBOL_PUZZLES[randi() % SYMBOL_PUZZLES.size()].duplicate()
+
+
+# =====================================================================
 # Composite roll functions
 # =====================================================================
 
@@ -113,6 +225,8 @@ func roll_room_contents() -> Dictionary:
 					"gold":
 						result["gold_amount"] = roll(6)
 		"healing_spring": pass
+		"puzzle":
+			result["riddle"] = roll_riddle()
 		"store_room":
 			result["treasure"] = TREASURES[roll(12)].duplicate()
 

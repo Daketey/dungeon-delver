@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dg5y4675h5g5r"
-path.s3tc="res://.godot/imported/WallNormals.png-ef4d0e9ba9718864188fe72701365e33.s3tc.ctex"
+uid="uid://8ugt0dsajvfg"
+path.s3tc="res://.godot/imported/WallNormals.png-0e86d5a7ade5cf0de425b65c7d342d23.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://textures/dungeon/WallNormals.png"
-dest_files=["res://.godot/imported/WallNormals.png-ef4d0e9ba9718864188fe72701365e33.s3tc.ctex"]
+source_file="res://Textures/dungeon/WallNormals.png"
+dest_files=["res://.godot/imported/WallNormals.png-0e86d5a7ade5cf0de425b65c7d342d23.s3tc.ctex"]
 
 [params]
 
@@ -26,8 +26,8 @@ compress/normal_map=1
 compress/channel_pack=0
 mipmaps/generate=true
 mipmaps/limit=-1
-roughness/mode=1
-roughness/src_normal="res://textures/dungeon/WallNormals.png"
+roughness/mode=0
+roughness/src_normal=""
 process/channel_remap/red=0
 process/channel_remap/green=1
 process/channel_remap/blue=2

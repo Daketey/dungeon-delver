@@ -4,7 +4,7 @@ var hp_label: Label
 var gold_label: Label
 var kill_label: Label
 var hint_label: Label
-var bg: ColorRect
+var bg: Panel
 var explored_label: Label
 
 # Flash overlay
@@ -75,12 +75,13 @@ func _process(_delta: float) -> void:
 		hp_label.text = "HP: %d / %d" % [hp, max_hp]
 		hp_label.add_theme_color_override("font_color", hp_color)
 	gold_label.text = "Gold: %d" % ResourceStash.gold
-	kill_label.text = "Kills: %d / 10" % ResourceStash.kill_count
 	if ResourceStash.boss_active:
-		kill_label.text += "  BOSS READY"
+		var boss_kills: int = 1 if ResourceStash.boss_defeated else 0
+		kill_label.text = "BOSS: %d / 1" % boss_kills
 		kill_label.add_theme_color_override("font_color", Color(1.0, 0.3, 0.3))
-
-
+	else:
+		kill_label.text = "Kills: %d / 10" % ResourceStash.kill_count
+		kill_label.add_theme_color_override("font_color", Color.WHITE)
 func flash_red() -> void:
 	if _flash_tween and _flash_tween.is_running():
 		_flash_tween.kill()
@@ -94,25 +95,31 @@ func show_hint(text: String) -> void:
 
 
 var _active_notifications: Array = []
+var _notify_vbox: VBoxContainer = null
 
 func show_notification(text: String, color: Color = Color.WHITE, duration: float = 2.5) -> void:
 	_cleanup_notifications()
 
+	if _notify_vbox == null:
+		_notify_vbox = VBoxContainer.new()
+		_notify_vbox.add_theme_constant_override("separation", 4)
+		var vs_init := get_viewport().get_visible_rect().size
+		_notify_vbox.position = Vector2(40, vs_init.y * 0.25)
+		_notify_vbox.size = Vector2(vs_init.x - 80, 0)
+		add_child(_notify_vbox)
+
 	var lbl := Label.new()
 	lbl.text = text
-	lbl.add_theme_font_size_override("font_size", 24)
+	lbl.add_theme_font_size_override("font_size", 20)
 	lbl.add_theme_color_override("font_color", color)
 	lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	var vs := get_viewport().get_visible_rect().size
-	var base_y: float = vs.y * 0.30
-	var offset: float = _active_notifications.size() * 38.0
-	lbl.position = Vector2(40, base_y + offset)
-	lbl.size = Vector2(vs.x - 80, 34)
-	add_child(lbl)
+	lbl.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+	_notify_vbox.add_child(lbl)
 	_active_notifications.append(lbl)
 	var tween := create_tween()
-	tween.tween_property(lbl, "modulate:a", 0.0, duration).set_trans(Tween.TRANS_QUAD).set_delay(duration * 0.3)
+	tween.tween_property(lbl, "modulate:a", 0.0, duration).set_trans(Tween.TRANS_QUAD).set_delay(duration * 0.2)
 	tween.tween_callback(lbl.queue_free)
+	tween.tween_callback(func(): _active_notifications.erase(lbl))
 
 	_add_log_entry(text, color)
 

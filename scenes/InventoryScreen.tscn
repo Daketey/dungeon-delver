@@ -1,0 +1,222 @@
+[gd_scene format=3 uid="uid://1oayku2mn57i"]
+
+[ext_resource type="Script" uid="uid://bu5y774rwx1rg" path="res://scripts/InventoryScreen.gd" id="1_inv"]
+
+[node name="InventoryScreen" type="CanvasLayer" unique_id=1568025405]
+process_mode = 3
+layer = 110
+script = ExtResource("1_inv")
+
+[node name="Panel" type="Panel" parent="." unique_id=1034329797]
+offset_right = 483.0
+offset_bottom = 466.0
+
+[node name="MainVBox" type="Control" parent="Panel" unique_id=193344231]
+anchors_preset = 0
+offset_left = 8.0
+offset_top = 7.0
+offset_right = 477.0
+offset_bottom = 436.0
+
+[node name="GoldLabel" type="Label" parent="Panel/MainVBox" unique_id=482788176]
+layout_mode = 0
+offset_left = 355.0
+offset_top = 18.0
+offset_right = 482.0
+offset_bottom = 35.0
+theme_override_colors/font_color = Color(1, 0.85, 0.2, 1)
+theme_override_font_sizes/font_size = 16
+text = "Gold: 0 GP"
+
+[node name="EquipmentLabel" type="Label" parent="Panel/MainVBox" unique_id=605146323]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 17.0
+offset_right = 102.0
+offset_bottom = 34.0
+theme_override_colors/font_color = Color(0.7647059, 0.7647059, 0.7647059, 1)
+theme_override_font_sizes/font_size = 16
+text = "Character"
+
+[node name="EquipmentGrid" type="GridContainer" parent="Panel/MainVBox" unique_id=1260445320]
+layout_mode = 0
+offset_left = 48.0
+offset_top = 46.0
+offset_right = 400.0
+offset_bottom = 114.0
+theme_override_constants/h_separation = 39
+columns = 4
+
+[node name="Slot0" type="VBoxContainer" parent="Panel/MainVBox/EquipmentGrid" unique_id=1826999375]
+layout_mode = 2
+
+[node name="SlotLabel" type="Label" parent="Panel/MainVBox/EquipmentGrid/Slot0" unique_id=1609814298]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.6, 0.6, 0.6, 1)
+theme_override_font_sizes/font_size = 12
+text = "Weapon"
+
+[node name="ItemLabel" type="Label" parent="Panel/MainVBox/EquipmentGrid/Slot0" unique_id=1526076840]
+layout_mode = 2
+theme_override_font_sizes/font_size = 13
+text = "-"
+
+[node name="UnequipBtn" type="Button" parent="Panel/MainVBox/EquipmentGrid/Slot0" unique_id=1308881017]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+mouse_filter = 1
+text = "X"
+
+[node name="Slot1" type="VBoxContainer" parent="Panel/MainVBox/EquipmentGrid" unique_id=1090182447]
+layout_mode = 2
+
+[node name="SlotLabel" type="Label" parent="Panel/MainVBox/EquipmentGrid/Slot1" unique_id=1722084374]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.6, 0.6, 0.6, 1)
+theme_override_font_sizes/font_size = 12
+text = "Offhand"
+
+[node name="ItemLabel" type="Label" parent="Panel/MainVBox/EquipmentGrid/Slot1" unique_id=1434667195]
+layout_mode = 2
+theme_override_font_sizes/font_size = 13
+text = "-"
+
+[node name="UnequipBtn" type="Button" parent="Panel/MainVBox/EquipmentGrid/Slot1" unique_id=279066711]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+mouse_filter = 1
+text = "X"
+
+[node name="Slot2" type="VBoxContainer" parent="Panel/MainVBox/EquipmentGrid" unique_id=86072018]
+layout_mode = 2
+
+[node name="SlotLabel" type="Label" parent="Panel/MainVBox/EquipmentGrid/Slot2" unique_id=1831309799]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.6, 0.6, 0.6, 1)
+theme_override_font_sizes/font_size = 12
+text = "Armor"
+
+[node name="ItemLabel" type="Label" parent="Panel/MainVBox/EquipmentGrid/Slot2" unique_id=283252881]
+layout_mode = 2
+theme_override_font_sizes/font_size = 13
+text = "-"
+
+[node name="UnequipBtn" type="Button" parent="Panel/MainVBox/EquipmentGrid/Slot2" unique_id=146005531]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+mouse_filter = 1
+text = "X"
+
+[node name="Slot3" type="VBoxContainer" parent="Panel/MainVBox/EquipmentGrid" unique_id=16406848]
+layout_mode = 2
+
+[node name="SlotLabel" type="Label" parent="Panel/MainVBox/EquipmentGrid/Slot3" unique_id=1460904833]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.6, 0.6, 0.6, 1)
+theme_override_font_sizes/font_size = 12
+text = "Accessory"
+
+[node name="ItemLabel" type="Label" parent="Panel/MainVBox/EquipmentGrid/Slot3" unique_id=421714795]
+layout_mode = 2
+theme_override_font_sizes/font_size = 13
+text = "-"
+
+[node name="UnequipBtn" type="Button" parent="Panel/MainVBox/EquipmentGrid/Slot3" unique_id=1934609402]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+mouse_filter = 1
+text = "X"
+
+[node name="StatLabel" type="Label" parent="Panel/MainVBox" unique_id=1326385914]
+layout_mode = 0
+offset_left = 18.0
+offset_top = 126.0
+offset_right = 70.0
+offset_bottom = 143.0
+theme_override_colors/font_color = Color(0.7666196, 0.76661956, 0.76661956, 1)
+theme_override_font_sizes/font_size = 16
+text = "Stats"
+
+[node name="ColorRect" type="ColorRect" parent="Panel/MainVBox/StatLabel" unique_id=884994760]
+layout_mode = 0
+offset_top = 28.0
+offset_right = 431.0
+offset_bottom = 48.0
+color = Color(0.07450981, 0.07450981, 0.07450981, 1)
+
+[node name="Stat" type="Label" parent="Panel/MainVBox/StatLabel" unique_id=1310702046]
+layout_mode = 0
+offset_left = 7.0
+offset_top = 29.0
+offset_right = 416.0
+offset_bottom = 43.0
+theme_override_font_sizes/font_size = 13
+text = "Bonuses: None"
+
+[node name="InventoryLabel" type="Label" parent="Panel/MainVBox" unique_id=1068112125]
+layout_mode = 0
+offset_left = 18.0
+offset_top = 185.0
+offset_right = 127.0
+offset_bottom = 202.0
+theme_override_colors/font_color = Color(0.7647059, 0.7647059, 0.7647059, 1)
+theme_override_font_sizes/font_size = 16
+text = "Inventory"
+
+[node name="ItemList" type="ItemList" parent="Panel/MainVBox" unique_id=1790756581]
+custom_minimum_size = Vector2(0, 160)
+layout_mode = 0
+offset_left = 16.0
+offset_top = 211.0
+offset_right = 452.0
+offset_bottom = 371.0
+size_flags_vertical = 3
+theme_override_colors/font_color = Color(0.9384497, 0.9384497, 0.9384497, 1)
+theme_override_constants/h_separation = 15
+theme_override_constants/v_separation = 10
+allow_reselect = true
+auto_width = true
+auto_height = true
+item_count = 1
+item_0/text = "None"
+
+[node name="ButtonRow" type="HBoxContainer" parent="Panel/MainVBox" unique_id=810338217]
+layout_mode = 0
+offset_left = 28.0
+offset_top = 385.0
+offset_right = 437.0
+offset_bottom = 415.0
+theme_override_constants/separation = 6
+
+[node name="UseBtn" type="Button" parent="Panel/MainVBox/ButtonRow" unique_id=800583454]
+custom_minimum_size = Vector2(90, 30)
+layout_mode = 2
+mouse_filter = 1
+disabled = true
+text = "Use"
+
+[node name="EquipBtn" type="Button" parent="Panel/MainVBox/ButtonRow" unique_id=811910472]
+custom_minimum_size = Vector2(90, 30)
+layout_mode = 2
+mouse_filter = 1
+disabled = true
+text = "Equip"
+
+[node name="DropBtn" type="Button" parent="Panel/MainVBox/ButtonRow" unique_id=632832574]
+custom_minimum_size = Vector2(90, 30)
+layout_mode = 2
+mouse_filter = 1
+disabled = true
+text = "Drop"
+
+[node name="CloseBtn" type="Button" parent="Panel/MainVBox/ButtonRow" unique_id=1896787266]
+custom_minimum_size = Vector2(100, 30)
+layout_mode = 2
+mouse_filter = 1
+text = "Close (Tab)"
+
+[connection signal="item_selected" from="Panel/MainVBox/ItemList" to="." method="_on_item_selected"]
+[connection signal="pressed" from="Panel/MainVBox/ButtonRow/UseBtn" to="." method="_on_use_pressed"]
+[connection signal="pressed" from="Panel/MainVBox/ButtonRow/EquipBtn" to="." method="_on_equip_pressed"]
+[connection signal="pressed" from="Panel/MainVBox/ButtonRow/DropBtn" to="." method="_on_drop_pressed"]
+[connection signal="pressed" from="Panel/MainVBox/ButtonRow/CloseBtn" to="." method="close"]
